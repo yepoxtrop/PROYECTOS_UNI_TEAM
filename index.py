@@ -1,3 +1,4 @@
+from funciones.funciones import *;
 #mensaje de bienvenida
 print("BIENVENIDO AL SISTEMA DE GESTION 'EL COSTA' "); 
 print("\nREGISTRAR VENTAS DE PRODUCTOS")
@@ -9,8 +10,6 @@ productos = 0;
 contadorProductos = 0; 
 contadorDinero = 0; 
 ventas = []; 
-totalProductos = []
-totalDinero = []
 
 #primera parte
 #primer bucle principal
@@ -34,16 +33,7 @@ while procesos == True:
         opciones = int(input("\n→Ingrese una de las opciones:")); 
 
     #Asignacion de id para tipo de producto    
-    if opciones == 1:
-        codigo = 1;  
-    elif opciones == 2:
-        codigo = 2; 
-    elif opciones == 3:
-        codigo = 3; 
-    elif opciones == 4:
-        codigo = 4;        
-    else:
-        print("ALERTA: Eres hacker bro, no deberias de estar aqui"); 
+    codigo = codigoProducto(opciones); 
         
     #assignacion de valores por producto
     nombre = input("\n→Ingrese el nombre del producto:");         
@@ -56,12 +46,11 @@ while procesos == True:
         cantidad = int(input("\n→Ingrese la unidades vendidas del producto:")); 
         precio = float(input("\n→Ingrese el precio unitario del articulo:")); 
         descuento = float(input("\n→Ingrese el descuentot total de la factura:")); 
-            
-    subtotal = cantidad * precio; 
-    total = subtotal - descuento;    
-            
+    
+    datosProducto = arregloProducto(codigo, nombre, cantidad, precio, descuento); 
+    
     #agregar diccionario a matriz
-    ventas.append([codigo, nombre, cantidad, precio, descuento, subtotal, total]); 
+    ventas.append(datosProducto); 
         
     #continuar agregando producto o no  
     respuesta = input("\n¿DESEAS INGRESAR OTRO PRODUCTO? \n→S[si] | N[no]:"); 
@@ -79,7 +68,7 @@ while procesos == True:
 #segunda parte
 print("\n////////////////\nCALCULOS"); 
 
-#segundo condicional principal
+#segundo ciclo principal
 while procesos2 == True:
 
     #menu de opciones
@@ -105,83 +94,29 @@ while procesos2 == True:
 
         #se muestran todos lo producto por categoria
         print("\n°GAFAS"); 
-        for i in range(0,len(ventas),1):
-            if ventas[i][0] == 1:
-                print(f"Nombre: {ventas[i][1]} | Cantidad: {ventas[i][2]} | Total: {ventas[i][6]}"); 
-                contadorProductos += 1; 
-        if contadorProductos == 0:
-            print("No hay productos en esta cateogoria")
-        totalProductos.append(contadorProductos); 
-        contadorProductos = 0; 
+        gafas = encontrarDatosProducto(1, ventas); 
+        print(gafas); 
 
         print("\n°RELOJES"); 
-        for i in range(0,len(ventas),1):
-            if ventas[i][0] == 2:
-                print(f"Nombre: {ventas[i][1]} | Cantidad: {ventas[i][2]} | Total: {ventas[i][6]}"); 
-                contadorProductos += 1; 
-        if contadorProductos == 0:
-            print("No hay productos en esta cateogoria")
-        totalProductos.append(contadorProductos); 
-        contadorProductos = 0; 
+        relojes = encontrarDatosProducto(2, ventas); 
+        print(relojes); 
                 
         print("\n°ACCESORIOS PARA CELULAR"); 
-        for i in range(0,len(ventas),1):
-            if ventas[i][0] == 3:
-                print(f"Nombre: {ventas[i][1]} | Cantidad: {ventas[i][2]} | Total: {ventas[i][6]}"); 
-                contadorProductos += 1; 
-        if contadorProductos == 0:
-            print("No hay productos en esta cateogoria")
-        totalProductos.append(contadorProductos); 
-        contadorProductos = 0; 
+        accesorios = encontrarDatosProducto(3, ventas); 
+        print(accesorios); 
 
         print("\n°OTROS PRODUCTOS"); 
-        for i in range(0,len(ventas),1):
-            if ventas[i][0] == 4:
-                print(f"Nombre: {ventas[i][1]} | Cantidad: {ventas[i][2]} | Total: {ventas[i][6]}"); 
-                contadorProductos += 1; 
-        if contadorProductos == 0:
-            print("No hay productos en esta cateogoria")
-        totalProductos.append(contadorProductos); 
-        contadorProductos = 0; 
-    
+        otrosProd = encontrarDatosProducto(4, ventas); 
+        print(otrosProd); 
+        
         print("\n°CONTADOR TOTAL"); 
-        print(f"1.Gafas:{totalProductos[0]}"); 
-        print(f"1.Relojes:{totalProductos[1]}"); 
-        print(f"1.Accesorios:{totalProductos[2]}"); 
-        print(f"1.Otros:{totalProductos[3]}"); 
+        listado1 = contadorTotalProductos(ventas); 
+        print(listado1); 
 
     elif opciones2 == 2: 
 
-        #se muestra el total de dinero por categoria y su sumatoria
-        for i in range(0,len(ventas),1):
-            if ventas[i][0] == 1:
-                contadorDinero = contadorDinero + ventas[i][6]; 
-        print(f"\n°Gafas:{contadorDinero} COP"); 
-        totalDinero.append(contadorDinero); 
-        contadorDinero = 0; 
-        
-        for i in range(0,len(ventas),1): 
-            if ventas[i][0] == 2:
-                contadorDinero = contadorDinero + ventas[i][6]; 
-        print(f"°Relojes:{contadorDinero}COP"); 
-        totalDinero.append(contadorDinero); 
-        contadorDinero = 0; 
-
-        for i in range(0,len(ventas),1):
-            if ventas[i][0] == 3:
-                contadorDinero = contadorDinero + ventas[i][6]; 
-        print(f"°Accesorios para celular:{contadorDinero}COP"); 
-        totalDinero.append(contadorDinero); 
-        contadorDinero = 0; 
-
-        for i in range(0,len(ventas),1):
-            if ventas[i][0] == 4:
-                contadorDinero = contadorDinero + ventas[i][6]; 
-        print(f"°Otros:{contadorDinero}COP"); 
-        totalDinero.append(contadorDinero); 
-        contadorDinero = 0; 
-
-        print(f"\n°Total de dinero:{totalDinero[0]+totalDinero[1]+totalDinero[2]+totalDinero[3]} COP"); 
+        listado2 = contadorTotalDinero(ventas); 
+        print(listado2);  
         
     elif opciones2 == 3:
 
